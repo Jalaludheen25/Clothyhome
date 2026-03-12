@@ -316,6 +316,43 @@
             </div>
           </template>
         </div>
+
+        <!-- JEWELRY RECOMMENDATIONS (For Sarees) -->
+        <template x-if="product.category === 'Sarees'">
+          <div class="mt-8 p-5 bg-white rounded-2xl shadow-sm border fade-in"
+            style="border-color:#e8f0eb; animation-delay: .2s;">
+            <h3 class="brand text-lg font-black mb-1" style="color:var(--text);">Complete the Look ✨</h3>
+            <p class="text-xs mb-4" style="color:#6b8070;">Perfect matching jewelry for this beautiful saree.</p>
+            <div class="space-y-3">
+              <template x-for="rec in recommendations" :key="rec.id">
+                <div class="flex items-center gap-3 p-3 rounded-xl border"
+                  style="border-color:#f0f5f2; background:#fafdfb;">
+                  <img :src="rec.image" class="w-14 h-14 rounded-lg object-cover shadow-sm" />
+                  <div class="flex-1">
+                    <p class="text-sm font-bold leading-tight" style="color:var(--text);" x-text="rec.name"></p>
+                    <p class="text-xs font-bold" style="color:var(--green);">
+                      <template x-if="rec.isFree">
+                        <span class="px-2 py-0.5 rounded uppercase tracking-widest text-[#1e8a56]"
+                          style="font-size:10px; background:rgba(46,170,110,.15);">Free with Saree</span>
+                      </template>
+                      <template x-if="!rec.isFree">
+                        <span x-text="'₹' + rec.price.toLocaleString('en-IN')"></span>
+                      </template>
+                    </p>
+                  </div>
+                  <button @click="addRecToCart(rec)"
+                    class="w-8 h-8 rounded-full flex items-center justify-center text-white"
+                    style="background:var(--green); transition:all .2s;"
+                    onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+                    </svg>
+                  </button>
+                </div>
+              </template>
+            </div>
+          </div>
+        </template>
       </div>
 
       <!-- INFO -->
@@ -474,41 +511,77 @@
       return {
         toast: false, toastMsg: '', showAuthModal: false, authModalMsg: '',
         cartCount: 0, user: null, activeImage: '', selectedVariant: '', activeTab: 'desc', qty: 1,
-        product: {}, related: [],
+        product: {}, related: [], recommendations: [],
+        allProducts: [
+          { id: 1, name: 'Kundan Bridal Necklace Set', category: 'Jewelry', subCategory: 'Necklaces', price: 12500, originalPrice: 15000, image: 'images/kundan_necklace.png', badge: 'New', rating: 4.8, reviews: 247 },
+          { id: 2, name: 'Banarasi Silk Saree — Royal Blue', category: 'Sarees', subCategory: 'Banarasi Sarees', price: 18999, originalPrice: 22000, image: 'images/banarasi_saree.png', badge: 'Hot', rating: 4.9, reviews: 184 },
+          { id: 3, name: 'Polki Diamond Drop Earrings', category: 'Jewelry', subCategory: 'Earrings', price: 8750, originalPrice: null, image: 'images/polki_earrings.png', badge: 'Best Seller', rating: 4.7, reviews: 156 },
+          { id: 4, name: 'Kanjivaram Silk Saree — Crimson', category: 'Sarees', subCategory: 'Kanjivaram Sarees', price: 24500, originalPrice: 28000, image: 'images/kanjivaram_saree.png', badge: 'Sale', rating: 4.9, reviews: 210 },
+          { id: 5, name: 'Gold Plated Bangles Set (6pc)', category: 'Jewelry', subCategory: 'Bangles', price: 4200, originalPrice: 5500, image: 'images/gold_bangles.png', badge: 'Sale', rating: 4.6, reviews: 98 },
+          { id: 6, name: 'Cotton Handloom Saree — Mustard', category: 'Sarees', subCategory: 'Cotton Sarees', price: 3800, originalPrice: null, image: 'images/cotton_saree.png', badge: 'New', rating: 4.5, reviews: 75 },
+          { id: 7, name: 'Anarkali Kurta Set — Emerald', category: 'Clothing', subCategory: 'Kurtas', price: 3200, originalPrice: 4000, image: 'images/anarkali_kurta.png', badge: 'New', rating: 4.6, reviews: 112 },
+          { id: 8, name: 'Silk Saree — Emerald & Gold Zari', category: 'Sarees', subCategory: 'Silk Sarees', price: 15800, originalPrice: 18500, image: 'images/silk_saree_emerald.png', badge: 'Hot', rating: 4.8, reviews: 165 },
+          { id: 9, name: 'Jadau Ring — Pink Tourmaline', category: 'Jewelry', subCategory: 'Rings', price: 6500, originalPrice: null, image: 'images/jadau_ring.png', badge: 'New', rating: 4.6, reviews: 45 },
+          { id: 10, name: 'Chanderi Silk Saree — Ivory', category: 'Sarees', subCategory: 'Silk Sarees', price: 9200, originalPrice: 10500, image: 'images/chanderi_saree.png', badge: null, rating: 4.5, reviews: 88 },
+          { id: 11, name: 'Meenakari Jhumka Earrings', category: 'Jewelry', subCategory: 'Earrings', price: 3200, originalPrice: 4000, image: 'images/meenakari_jhumka.png', badge: 'Sale', rating: 4.7, reviews: 134 },
+          { id: 12, name: 'Bridal Lehenga — Blush Pink', category: 'Clothing', subCategory: 'Lehengas', price: 28500, originalPrice: 35000, image: 'images/bridal_lehenga.png', badge: 'Hot', rating: 4.9, reviews: 290 },
+        ],
 
         init() {
           const u = localStorage.getItem('clothyhome_user');
           this.user = u ? JSON.parse(u) : null;
           this.cartCount = JSON.parse(localStorage.getItem('clothyhome_cart') || '[]').reduce((a, i) => a + i.qty, 0);
+
+          const params = new URLSearchParams(window.location.search);
+          const pId = parseInt(params.get('id')) || 1;
+          const found = this.allProducts.find(p => p.id === pId) || this.allProducts[0];
+
           this.product = {
-            id: 1, name: 'Kundan Bridal Necklace Set', category: 'Jewelry', subCategory: 'Necklaces',
-            badge: 'New Arrival', price: 12500, originalPrice: 15000, rating: 4.8, reviews: 247,
-            description: 'A timeless Kundan bridal necklace set handcrafted by master artisans. Features traditional Kundan stonework with 22KT gold plating, adorned with natural gemstones.',
-            fullDescription: 'This exquisite Kundan Bridal Necklace Set is a celebration of India\'s rich jewelry heritage. Handcrafted over 30 days by finest artisans, each piece tells a story of generations of craftsmanship. The set includes a statement necklace with matching jhumka earrings. Kundan stones are sourced from Rajasthan\'s finest gem merchants, embedded in 22KT gold-plated brass.',
-            material: 'Base metal: Brass with 22KT gold plating. Stones: Kundan (glass-set), Polki diamonds. Finish: Meenakari enamel work on reverse.',
-            variantLabel: 'Length', variants: ['14 inch', '16 inch', '18 inch', 'Custom'],
-            images: [
-              'images/kundan_necklace.png',
-              'images/kundan_necklace.png',
-              'images/kundan_necklace.png',
-              'images/kundan_necklace.png',
-            ]
+            ...found,
+            description: 'Experience the elegance with this beautifully crafted piece. Designed for the modern aesthetic while holding true to traditional roots.',
+            fullDescription: 'This exquisite piece is a celebration of India\'s rich heritage. Handcrafted by the finest artisans, each item tells a story of generations of craftsmanship. Made with love and care, ready to elevate your wardrobe.',
+            material: 'Premium materials with dedicated craftsmanship. Refer to the label for specific care instructions.',
+            variantLabel: found.category === 'Jewelry' ? 'Size' : 'Fit/Length',
+            variants: found.category === 'Jewelry' ? ['Standard', 'Custom'] : ['Small', 'Medium', 'Large', 'Unstitched'],
+            images: [found.image, found.image, found.image, found.image]
           };
+
           this.activeImage = this.product.images[0];
           this.selectedVariant = this.product.variants[0];
-          this.related = [
-            { id: 3, name: 'Polki Diamond Drop Earrings', price: 8750, image: 'images/polki_earrings.png' },
-            { id: 5, name: 'Gold Plated Bangles Set', price: 4200, image: 'images/gold_bangles.png' },
-            { id: 9, name: 'Jadau Ring — Pink Tourmaline', price: 6500, image: 'images/jadau_ring.png' },
-            { id: 11, name: 'Meenakari Jhumka Earrings', price: 3200, image: 'images/meenakari_jhumka.png' },
+
+          this.recommendations = [
+            { id: 9, name: 'Jadau Ring — Pink Tourmaline', price: 0, originalPrice: 6500, image: 'images/jadau_ring.png', isFree: true },
+            { id: 5, name: 'Gold Plated Bangles Set', price: 4200, originalPrice: 5500, image: 'images/gold_bangles.png', isFree: false },
+            { id: 1, name: 'Kundan Bridal Necklace Set', price: 12500, originalPrice: 15000, image: 'images/kundan_necklace.png', isFree: false },
+            { id: 13, name: 'Gold & Enamel Cufflinks', price: 3500, originalPrice: null, image: 'images/gold_cufflinks.png', isFree: false }
           ];
+
+          this.related = this.allProducts.filter(p => p.id !== this.product.id).sort(() => 0.5 - Math.random()).slice(0, 4);
+        },
+
+        addRecToCart(rec) {
+          if (!this.user) { this.authModalMsg = 'Sign in to add this item to your cart.'; this.showAuthModal = true; return; }
+          let cart = JSON.parse(localStorage.getItem('clothyhome_cart') || '[]');
+
+          // If it's the free ring, check if we already have it to avoid duplicates, and make sure it's linked
+          const isBonus = window.location.pathname.includes('product.html') && this.product.category === 'Sarees' && rec.isFree;
+
+          const idx = cart.findIndex(i => i.id === rec.id && i.isBonus === isBonus);
+          if (idx > -1) {
+            cart[idx].qty += 1;
+          } else {
+            cart.push({ id: rec.id, name: rec.name, price: rec.price, image: rec.image, qty: 1, isBonus: isBonus, relatedTo: isBonus ? this.product.id : null });
+          }
+          localStorage.setItem('clothyhome_cart', JSON.stringify(cart));
+          this.cartCount = cart.reduce((a, i) => a + i.qty, 0);
+          this.showToast('Added ' + rec.name + ' to cart!');
         },
 
         addToCartAction() {
           if (!this.user) { this.authModalMsg = 'Sign in to add this item to your cart.'; this.showAuthModal = true; return; }
           let cart = JSON.parse(localStorage.getItem('clothyhome_cart') || '[]');
-          const idx = cart.findIndex(i => i.id === this.product.id);
-          if (idx > -1) cart[idx].qty += this.qty; else cart.push({ id: this.product.id, name: this.product.name, price: this.product.price, image: this.product.images[0], qty: this.qty });
+          const idx = cart.findIndex(i => i.id === this.product.id && !i.isBonus);
+          if (idx > -1) cart[idx].qty += this.qty; else cart.push({ id: this.product.id, name: this.product.name, price: this.product.price, image: this.product.images[0], qty: this.qty, isBonus: false });
           localStorage.setItem('clothyhome_cart', JSON.stringify(cart));
           this.cartCount = cart.reduce((a, i) => a + i.qty, 0);
           this.showToast('Added to cart!');
@@ -517,8 +590,8 @@
         buyNowAction() {
           if (!this.user) { this.authModalMsg = 'Sign in to purchase this item.'; this.showAuthModal = true; return; }
           let cart = JSON.parse(localStorage.getItem('clothyhome_cart') || '[]');
-          const idx = cart.findIndex(i => i.id === this.product.id);
-          if (idx > -1) cart[idx].qty += this.qty; else cart.push({ id: this.product.id, name: this.product.name, price: this.product.price, image: this.product.images[0], qty: this.qty });
+          const idx = cart.findIndex(i => i.id === this.product.id && !i.isBonus);
+          if (idx > -1) cart[idx].qty += this.qty; else cart.push({ id: this.product.id, name: this.product.name, price: this.product.price, image: this.product.images[0], qty: this.qty, isBonus: false });
           localStorage.setItem('clothyhome_cart', JSON.stringify(cart));
           window.location.href = 'checkout.html';
         },
