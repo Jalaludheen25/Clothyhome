@@ -99,13 +99,13 @@
   <!-- HEADER -->
   <header class="sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="products.html" class="flex items-center gap-2.5">
+      <a href="index.html" class="flex items-center gap-2.5">
         <div class="h-10 md:h-12 overflow-hidden flex items-center">
                     <img src="logo.png" alt="Clothyhome" class="h-full w-auto object-contain" />
                 </div>
       </a>
       <nav class="hidden md:flex items-center gap-1">
-        <a href="products.html"
+        <a href="index.html"
           class="text-sm font-semibold px-3 py-2 rounded-xl transition-colors hover:bg-white/10 text-[#aabbb2]">Collections</a>
         <a href="cart.html" class="text-sm font-semibold px-3 py-2 rounded-xl text-white"
           style="background:rgba(46,170,110,.25);">Cart</a>
@@ -133,7 +133,7 @@
               <p class="text-xs" style="color:#6b8070;" x-text="user?user.email:''"></p>
             </div>
             <div class="py-1">
-              <a href="products.html" class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-green-50"
+              <a href="index.html" class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-green-50"
                 style="color:#5a7a68;">🛍️ Collections</a>
               <button @click="logout()" class="flex items-center gap-2 w-full px-4 py-2.5 text-sm hover:bg-red-50"
                 style="color:#e53e3e;">🚪 Sign Out</button>
@@ -162,7 +162,7 @@
       <div class="text-7xl mb-4">🛒</div>
       <h2 class="brand text-2xl font-black mb-2" style="color:var(--text);">Your cart is empty</h2>
       <p class="text-sm mb-6" style="color:#6b8070;">Discover our beautiful collections and add items you love!</p>
-      <a href="products.html" class="green-btn inline-block px-8 py-3.5 rounded-xl text-sm font-bold">Browse
+      <a href="index.html" class="green-btn inline-block px-8 py-3.5 rounded-xl text-sm font-bold">Browse
         Collections</a>
     </div>
 
@@ -276,7 +276,7 @@
             :style="couponApplied?'color:var(--green);':'color:#e53e3e;'" x-text="couponMsg"></p>
         </div>
 
-        <a href="products.html" class="outline-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm">
+        <a href="index.html" class="outline-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm">
           ← Continue Shopping
         </a>
 
@@ -427,6 +427,7 @@
       }
     }
   </script>
+
 </body>
 
 </html>

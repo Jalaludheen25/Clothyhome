@@ -46,7 +46,7 @@
   email:'', password:'', remember:false, showPass:false, errors:{}, redirectMsg:'',
   init() {
     if (localStorage.getItem('clothyhome_user')) {
-      const rd = localStorage.getItem('clothyhome_redirect') || 'products.html';
+      const rd = localStorage.getItem('clothyhome_redirect') || 'index.html';
       localStorage.removeItem('clothyhome_redirect');
       window.location.href = rd; return;
     }
@@ -62,7 +62,7 @@
     if (!this.validate()) return;
     const name = this.email.split('@')[0];
     localStorage.setItem('clothyhome_user', JSON.stringify({ name: name.charAt(0).toUpperCase()+name.slice(1), email: this.email }));
-    const rd = localStorage.getItem('clothyhome_redirect') || 'products.html';
+    const rd = localStorage.getItem('clothyhome_redirect') || 'index.html';
     localStorage.removeItem('clothyhome_redirect');
     window.location.href = rd;
   }
@@ -157,7 +157,7 @@
 
         <div class="divider">or continue with</div>
 
-        <a href="products.html" class="social-btn w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm w-full">
+        <a href="index.html" class="social-btn w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm w-full">
           👁 Browse as Guest
         </a>
 
@@ -170,5 +170,6 @@
   </div>
 
 </div>
+
 </body>
 </html>
